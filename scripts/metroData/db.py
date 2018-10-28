@@ -1,15 +1,18 @@
+#django db에 접근하는 기능들을 작성하는 파일
 import django
 from django.db.utils import IntegrityError
 from django.conf import settings
 from metro.settings import DATABASES, ASSET_DIR
 from . import api
+from ._config import api_key
 import json,os
+import requests
 
 
 settings.configure(
     DATABASES=DATABASES,
     INSTALLED_APPS=[
-        'seoul',
+        'seoul.apps.SeoulConfig',
     ]
 )
 django.setup()
@@ -55,3 +58,29 @@ def update_metro_db(recent=False):
     except FileNotFoundError:
         print("There is no metro json file, Please update / download the file first.")
         return False
+
+
+def download_station_json(staion_nm):
+    url = 'http://openapi.seoul.go.kr:8088/{}/json/stationInfo/0/6/{}'.format(api_key, staion_nm)
+    res = requests.get(url)
+    if res.status_code == 200:
+        with open(os.path.join(ASSET_DIR, 'seoul_metro_station_json', '{}.json'.format(staion_nm)), 'w', encoding='utf-8') as w:
+            w.write(res.text)
+            print("Updated Successfully.")
+            return True
+    else:
+        print("Update Failed: Error {}".format(res.status_code))
+        return False
+
+def download_station_json_all():
+    stations = Station.objects.all()
+    n = len(stations)
+    cnt = 0
+    while cnt < n:
+        station_nm = stations[cnt]
+        if download_station_json(station_nm):
+            print(station_nm)
+            cnt += 1
+
+
+
