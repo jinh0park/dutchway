@@ -8,11 +8,9 @@
 }
 
 .map {
-  display:block;
   position: relative;
   border: 1px;
   background-color: #BBBBBB;
-  height: 400;
-  width: 400;
-  margin: auto;
+  height: 400px;
+  width: 400px;
 }
