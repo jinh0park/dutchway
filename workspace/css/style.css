@@ -1,0 +1,16 @@
+.map > .circle {
+  height: 50px;
+  width: 50px;
+  background-color: #555555;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+}
+
+.map {
+  position: relative;
+  border: 1px;
+  background-color: #BBBBBB;
+  height: 400px;
+  width: 400px;
+}

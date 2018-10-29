@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, reverse
 from django.views.generic import ListView
 from .models import *
 
 def index(request):
     context = {}
-    return render(request, 'seoul/index.html',context)
+    return render(request, reverse('seoul:index'),context)
 
 
 def line_list(request):
