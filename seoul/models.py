@@ -38,6 +38,7 @@ class Station(models.Model):
     station_cd = models.CharField(max_length=4, primary_key=True)
     station_nm = models.CharField(max_length=20)
     fr_code = models.CharField(max_length=5)
+    transfer_count = models.IntegerField(default=1)
 
     def __str__(self):
         return self.station_nm

@@ -8,11 +8,20 @@
   </head>
   <body>
     <div class="map">
-      <span class="circle" id="226"></span>
+      <span class="circle" id="1"></span>
+      <span class="circle" id="2"></span>
+      <span class="circle" id="3"></span>
+      <span class="circle" id="4"></span>
+      <span class="circle" id="5"></span>
+      <span class="circle" id="6"></span>
+      <span class="circle" id="7"></span>
+      <span class="circle" id="8"></span>
     </div>
 
     <script type="text/javascript">
-      $("#226").offset({top:200, left:50.9})
+    for(i=1;i<=8;i++){
+      $("#"+i).offset({top:40*i, left:35*i})
+    }
     </script>
 
 

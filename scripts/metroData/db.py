@@ -61,7 +61,7 @@ def update_metro_db(recent=False):
 
 
 def download_station_json(staion_nm):
-    url = 'http://openapi.seoul.go.kr:8088/{}/json/stationInfo/0/6/{}'.format(api_key, staion_nm)
+    url = 'http://swopenapi.seoul.go.kr/api/subway/{}/json/stationInfo/0/5/{}'.format(api_key, staion_nm)
     res = requests.get(url)
     if res.status_code == 200:
         with open(os.path.join(ASSET_DIR, 'seoul_metro_station_json', '{}.json'.format(staion_nm)), 'w', encoding='utf-8') as w:
@@ -71,6 +71,7 @@ def download_station_json(staion_nm):
     else:
         print("Update Failed: Error {}".format(res.status_code))
         return False
+
 
 def download_station_json_all():
     stations = Station.objects.all()
@@ -82,5 +83,14 @@ def download_station_json_all():
             print(station_nm)
             cnt += 1
 
+def update_station_transfer_num():
+    for station in Station.objects.all():
+        try:
+            station.transfer_count = Station.objects.filter(station_nm=station.station_nm).count()
+            station.save()
+            print(station.station_nm, station.transfer_count)
+        except Exception as e:
+            print(e)
+            pass
 
 
