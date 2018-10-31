@@ -40,6 +40,8 @@ class Station(models.Model):
     fr_code = models.CharField(max_length=5)
     transfer_count = models.IntegerField(default=1)
     naver_cd = models.CharField(max_length=10, default='', blank=True)
+    head_station = models.ForeignKey('self', on_delete=models.CASCADE, default='', related_name= 'head_station_set')
+    tail_station = models.ForeignKey('self', on_delete=models.CASCADE, default='', related_name= 'tail_station_set')
 
     def __str__(self):
         return self.station_nm

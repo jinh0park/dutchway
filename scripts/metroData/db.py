@@ -109,6 +109,23 @@ def get_adjacent_station(station_nm, line_num):
         print('데이터 오류')
         return False
 
+def set_adjacent_station():
+    for station in Station.objects.all():
+        try:
+            r = get_adjacent_station(station.station_nm, station.line_num)
+            if r:
+                station.tail_station, station.head_station = [Station.objects.get(station_nm=name,
+                                                                                  line_num=station.line_num) for name in r]
+                station.save()
+                print("완료", station.station_nm)
+            else:
+                print("정보없음", station.station_nm)
+        except Exception as e:
+            print("error", str(e))
+            pass
+
+
+
 
 def get_line_name_by_num(line_num):
     return dict(Station.STATION_NUM_CHOICES).get(line_num)

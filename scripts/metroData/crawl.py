@@ -12,15 +12,16 @@ def driver_on():
     return driver
 
 
-def get_path_time(fr_code_departure, fr_code_arrival):
-    if fr_code_arrival == fr_code_departure:
+def get_path_time(naver_code_departure, naver_code_arrival):
+    if naver_code_arrival == naver_code_departure:
         return 0
     driver = driver_on()
-    driver.get('https://m.map.naver.com/viewer/subwayPath.nhn?region=1000&departureId={}&arrivalId={}&pathType=1'.format(fr_code_departure,fr_code_arrival))
+    driver.get('https://m.map.naver.com/viewer/subwayPath.nhn?region=1000&departureId={}&arrivalId={}&pathType=1'.format(naver_code_departure,naver_code_arrival))
     x = driver.find_element_by_class_name('_time')
     if x is None:
         return 0
     print(x.text)
+    driver.quit()
     return int(x.text[:-1])
 
 

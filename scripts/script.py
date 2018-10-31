@@ -12,17 +12,24 @@ from django.db.models import Q
 #print(metroCrawl.get_naver_subway_code('평택역', '1호선'))
 #print(metroDB.Station.objects.all().count())
 #metroDB.update_naver_cd_station()
-#
-with open('output.txt','w',encoding='utf=8') as f:
-    stations = metroDB.Station.objects.filter(naver_cd='')
-    for station in stations:
-        try:
-            name = station.station_nm
-            line = metroDB.get_line_name_by_num(station.line_num)
-            r = metroCrawl.get_naver_subway_code(name+'역', line)
-            t = '{}|{}|{}'.format(station.station_nm, station.fr_code, r)
-            print(t)
-            f.write(t+'\n')
-        except Exception as e:
-            print('error: '+str(e))
-            pass
+metroDB.set_adjacent_station()
+
+
+
+
+
+
+def naver_code_func():
+    with open('output.txt','w',encoding='utf=8') as f:
+        stations = metroDB.Station.objects.filter(naver_cd='')
+        for station in stations:
+            try:
+                name = station.station_nm
+                line = metroDB.get_line_name_by_num(station.line_num)
+                r = metroCrawl.get_naver_subway_code(name+'역', line)
+                t = '{}|{}|{}'.format(station.station_nm, station.fr_code, r)
+                print(t)
+                f.write(t+'\n')
+            except Exception as e:
+                print('error: '+str(e))
+                pass
