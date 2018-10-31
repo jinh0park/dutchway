@@ -2,7 +2,7 @@
 import django
 from django.db.utils import IntegrityError
 from django.conf import settings
-from metro.settings import DATABASES, ASSET_DIR
+from metro.settings import DATABASES, ASSET_DIR, BASE_DIR
 from . import api
 from ._config import api_key
 import json,os
@@ -92,5 +92,40 @@ def update_station_transfer_num():
         except Exception as e:
             print(e)
             pass
+
+
+def get_adjacent_station(station_nm, line_num):
+    line_name = dict(Station.STATION_NUM_CHOICES).get(line_num)
+
+    with open(os.path.join(ASSET_DIR, 'seoul_metro_station_json', station_nm + '.json'), encoding='utf-8') as f:
+        data = json.loads(f.read())
+        if 'stationList' not in data:
+            print('해당 역에 대한 정보가 없습니다: {}'.format(station_nm))
+            return False
+        stationList = data['stationList']
+        for s in stationList:
+            if s['subwayNm'] == line_name:
+                return (s['statnFnm'], s['statnTnm'])
+        print('데이터 오류')
+        return False
+
+
+def get_line_name_by_num(line_num):
+    return dict(Station.STATION_NUM_CHOICES).get(line_num)
+
+def update_naver_cd_station():
+    with open(os.path.join(BASE_DIR, 'scripts', '3.txt'), 'r', encoding='utf-8') as f:
+        r = f.readlines()
+        cnt= 0
+        for line in r:
+            line = line.strip()
+            if line:
+                name, fr, naver = line.split('|')
+                s = Station.objects.get(fr_code=fr)
+                s.naver_cd = naver
+                s.save()
+                cnt+=1
+                print(line)
+    print('{}개 완료'.format(cnt))
 
 

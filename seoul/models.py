@@ -39,6 +39,7 @@ class Station(models.Model):
     station_nm = models.CharField(max_length=20)
     fr_code = models.CharField(max_length=5)
     transfer_count = models.IntegerField(default=1)
+    naver_cd = models.CharField(max_length=10, default='', blank=True)
 
     def __str__(self):
         return self.station_nm
