@@ -12,7 +12,7 @@ from django.db.models import Q
 #print(metroCrawl.get_naver_subway_code('평택역', '1호선'))
 #print(metroDB.Station.objects.all().count())
 #metroDB.update_naver_cd_station()
-metroDB.set_adjacent_station()
+#metroDB.set_adjacent_station()
 
 
 
