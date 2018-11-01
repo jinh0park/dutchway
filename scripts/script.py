@@ -14,7 +14,8 @@ import time
 #metroDB.update_naver_cd_station()
 # metroDB.set_adjacent_station()
 
-metroCrawl.get_path_time_adjacent_station('2')
+for i in metroDB.Station.STATION_NUM_CHOICES:
+    metroCrawl.get_path_time_adjacent_station(i[0])
 
 
 
