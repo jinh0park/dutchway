@@ -5,8 +5,11 @@ from urllib.parse import urlparse,parse_qs
 
 def driver_on():
     options = webdriver.ChromeOptions()
-    options.add_argument('headless')
+    #options.add_argument('headless')
     options.add_argument("disable-gpu")
+    options.add_argument(
+        "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
+
     driver = webdriver.Chrome(os.path.join(BASE_DIR,'scripts','metroData','webdriver','chromedriver.exe'), chrome_options=options)
     driver.implicitly_wait(3)
     return driver
@@ -17,6 +20,7 @@ def get_path_time(naver_code_departure, naver_code_arrival):
         return 0
     driver = driver_on()
     driver.get('https://m.map.naver.com/viewer/subwayPath.nhn?region=1000&departureId={}&arrivalId={}&pathType=1'.format(naver_code_departure,naver_code_arrival))
+    time.sleep(1)
     x = driver.find_element_by_class_name('_time')
     if x is None:
         return 0
