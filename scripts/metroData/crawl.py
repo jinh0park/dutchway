@@ -6,7 +6,7 @@ from . import db as metroDB
 
 def driver_on():
     options = webdriver.ChromeOptions()
-    #options.add_argument('headless')
+    options.add_argument('headless')
     options.add_argument("disable-gpu")
     options.add_argument(
         "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
@@ -44,15 +44,32 @@ def get_naver_subway_code(station_nm, line_name):
 def get_path_time_adjacent_station(line_num):
     driver = driver_on()
     for s in metroDB.Station.objects.filter(line_num=line_num):
-        if s.naver_cd == s.head_station.naver_cd:
-            continue
-        driver.get(
-            'https://m.map.naver.com/viewer/subwayPath.nhn?region=1000&departureId={}&arrivalId={}&pathType=1'.format(
-                s.naver_cd, s.head_station.naver_cd))
-        time.sleep(1)
-        x = driver.find_element_by_class_name('_time')
-        if x is None:
-            return 0
-        print(x.text)
+        try:
+            if s.naver_cd == s.head_station.naver_cd:
+                continue
+            driver.get(
+                'https://m.map.naver.com/viewer/subwayPath.nhn?region=1000&departureId={}&arrivalId={}&pathType=1'.format(
+                    s.naver_cd, s.head_station.naver_cd))
+            time.sleep(1)
+            h = driver.find_element_by_class_name('_time')
+            h = int(h.text[:-1])
+            s.head_time = float(h)
+            s.save()
+
+            if s.naver_cd == s.tail_station.naver_cd:
+                continue
+            driver.get(
+                'https://m.map.naver.com/viewer/subwayPath.nhn?region=1000&departureId={}&arrivalId={}&pathType=1'.format(
+                    s.naver_cd, s.tail_station.naver_cd))
+            time.sleep(1)
+            t = driver.find_element_by_class_name('_time')
+            t = int(t.text[:-1])
+
+            s.tail_time = float(t)
+            s.save()
+            print('{}-{} : {}, {}-{}: {}'.format(s.station_nm,s.tail_station.station_nm,t,s.station_nm,s.head_station.station_nm,h ))
+        except Exception as e:
+            print('error',e)
+
     driver.quit()
 
