@@ -42,9 +42,11 @@ class Station(models.Model):
     naver_cd = models.CharField(max_length=10, default='', blank=True)
     head_station = models.ForeignKey('self', on_delete=models.CASCADE, default='', related_name= 'head_station_set')
     tail_station = models.ForeignKey('self', on_delete=models.CASCADE, default='', related_name= 'tail_station_set')
+    head_time = models.FloatField(null=True)
+    tail_time = models.FloatField(null=True)
 
     def __str__(self):
-        return self.station_nm
+        return self.station_nm + '({})'.format(self.line_num)
 
 
 class Spot(models.Model):
