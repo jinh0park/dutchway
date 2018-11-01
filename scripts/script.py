@@ -1,6 +1,7 @@
 from scripts.metroData import api as metroApi
 from scripts.metroData import db as metroDB
 from scripts.metroData import crawl as metroCrawl
+from scripts.metroData import pathfinder as metroPath
 from django.db.models import Q
 import time
 
@@ -14,8 +15,8 @@ import time
 #metroDB.update_naver_cd_station()
 # metroDB.set_adjacent_station()
 
-for i in metroDB.Station.STATION_NUM_CHOICES:
-    metroCrawl.get_path_time_adjacent_station(i[0])
+# for i in metroDB.Station.STATION_NUM_CHOICES:
+#     metroCrawl.get_path_time_adjacent_station(i[0])
 
 
 

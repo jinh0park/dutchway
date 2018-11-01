@@ -31,6 +31,7 @@ class Station(models.Model):
         ('U','의정부경전철'),
         ('UI','우이신설선')
     ]
+    index = models.IntegerField()
     line_num = models.CharField(
         max_length=3,
         choices=STATION_NUM_CHOICES
