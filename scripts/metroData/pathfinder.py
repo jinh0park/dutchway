@@ -11,8 +11,10 @@ ret.fill(inf)
 S = Station.objects.all()
 # 인접 역 간 소요시간
 for s in S:
-    ret[s.index, s.head_station.index] = s.head_time if s.head_time else inf
-    ret[s.index, s.tail_station.index] = s.tail_time if s.tail_time else inf
+    h = s.head_time
+    ret[s.index, s.head_station.index] = s.head_time if s.head_time is not None else inf
+    t = s.tail_time
+    ret[s.index, s.tail_station.index] = s.tail_time if s.tail_time is not None else inf
 # 같은 역은 0분
 for i in range(N):
     ret[i,i] = 0
@@ -25,4 +27,6 @@ for s in Station.objects.filter(transfer_count__gte=2):
 
 y = shortest_path(ret)
 
-print(ret[117,93])
+
+for i, x in enumerate(y[117,:]):
+    print(x,Station.objects.get(index=i))
