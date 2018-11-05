@@ -4,7 +4,7 @@ from .models import *
 import numpy as np
 import os, json
 from metro.settings import ASSET_DIR
-from django.http import Http404, JsonResponse
+from django.http import Http404, JsonResponse, HttpResponseBadRequest
 
 def index(request):
     context = {}
@@ -35,20 +35,26 @@ class StationView:
 def pathfinder(request):
     if request.method != 'GET':
         return Http404()
-    s = request.GET.get('station').split(',')
-    avg_f = int(request.GET.get("avg")) if request.GET.get("avg") else 1000
-    max_f = int(request.GET.get("max")) if request.GET.get("max") else 1000
-    transfer_f = int(request.GET.get("trans")) if request.GET.get("trans") else 1000
-    sub_f = int(request.GET.get("sub")) if request.GET.get("sub") else 1000
-    order = int(request.GET.get("order")) if request.GET.get("order") else 'max'
-    ret = func(stations_fr_code = s, avg_f=avg_f, max_f=max_f, transfer_f=transfer_f, sub_f=sub_f, order=order)
-    if request.GET.get("count"):
-        cnt = int(request.GET.get("count"))
-        ret = ret[:cnt]
-    response = {
-        "content" : ret
-    }
-    return JsonResponse(response)
+    try:
+        s = request.GET.get('station').split(',')
+        if len(s) <=1:
+            raise Exception
+        avg_f = int(request.GET.get("avg")) if request.GET.get("avg") else 1000
+        max_f = int(request.GET.get("max")) if request.GET.get("max") else 1000
+        transfer_f = int(request.GET.get("trans")) if request.GET.get("trans") else 1000
+        sub_f = int(request.GET.get("sub")) if request.GET.get("sub") else 1000
+        order = int(request.GET.get("order")) if request.GET.get("order") else 'max'
+        ret = func(stations_fr_code = s, avg_f=avg_f, max_f=max_f, transfer_f=transfer_f, sub_f=sub_f, order=order)
+        if request.GET.get("count"):
+            cnt = int(request.GET.get("count"))
+            ret = ret[:cnt]
+        response = {
+            "status": 200,
+            "content" : ret
+        }
+        return JsonResponse(response)
+    except:
+        return HttpResponseBadRequest()
 
 
 
