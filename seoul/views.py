@@ -71,10 +71,10 @@ def func(stations_fr_code, avg_f=1000, max_f=1000, transfer_f=1000, sub_f=1000, 
     t_arr = np.array(t)
     trans_arr = np.array(trans)
 
-    avg_arr = np.average(t_arr,axis=1)
-    max_arr = np.max(t_arr,axis=1)
-    transfer_arr = np.max(trans_arr,axis=1)
-    sub_arr = np.abs(np.max(t_arr,axis=1) - np.min(t_arr,axis=1))
+    avg_arr = np.average(t_arr, axis=1)
+    max_arr = np.max(t_arr, axis=1)
+    transfer_arr = np.max(trans_arr, axis=1)
+    sub_arr = np.abs(np.max(t_arr, axis=1) - np.min(t_arr, axis=1))
 
     for i in range(N):
         f[i] = avg_arr[i] < avg_f and max_arr[i] < max_f and transfer_arr[i] < transfer_f and sub_arr[i] < sub_f
@@ -82,9 +82,15 @@ def func(stations_fr_code, avg_f=1000, max_f=1000, transfer_f=1000, sub_f=1000, 
     ret = []
     for i in range(N):
         if f[i]:
-            dest = Station.objects.get(index=i).fr_code
+            dest = Station.objects.get(index=i)
+            dest_ = {
+                'station_nm': dest.station_nm,
+                'line_num':dest.line_num,
+                'fr_code':dest.fr_code,
+                'naver_cd':dest.naver_cd,
+            }
             tmp = {
-                'dest': dest,
+                'dest': dest_,
                 'time': t[i],
                 'trans':trans[i],
                 'avg': int(avg_arr[i]),
