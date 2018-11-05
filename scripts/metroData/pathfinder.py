@@ -29,4 +29,5 @@ y = shortest_path(ret)
 
 
 for i, x in enumerate(y[117,:]):
-    print(x,Station.objects.get(index=i))
+    if x > 999:
+        print(x,Station.objects.get(index=i))
