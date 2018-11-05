@@ -18,7 +18,13 @@ import time
 # for i in metroDB.Station.STATION_NUM_CHOICES:
 #     metroCrawl.get_path_time_adjacent_station(i[0])
 
+#metroPath.save_shortest_path_array()
+# metroPath.shortest_path_by_fr_code(1,1)
+#metroPath.equal_path_by_fr_code('228','344')
+t = metroPath.func(('228','318','D19'))
 
+for i in t:
+    print(i)
 
 
 
