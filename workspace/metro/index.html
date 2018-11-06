@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko-kr" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/master.css">
+  <title></title>
+</head>
+
+<body>
+  <div class="container main">
+    <div class="container head">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1 class="text-center">더치웨이</h1>
+        </div>
+      </div>
+    </div>
+    <div class="container form-station-input">
+      <form id="form-station" class="" action="index.html" method="post">
+        <!-- 입력 필드 1개 시작 -->
+        <div class="row station-input 0">
+          <div class="col-xs-12">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="지하철 역 입력">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" disabled="disabled">-</button>
+              </span>
+            </div><!-- /input-group -->
+          </div><!-- /.col-lg-6 -->
+        </div>
+        <!-- 입력 필드 1개 끝  -->
+        <div class="row station-input 1">
+          <div class="col-xs-12">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="지하철 역 입력">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" disabled="disabled">-</button>
+              </span>
+            </div><!-- /input-group -->
+          </div><!-- /.col-lg-6 -->
+        </div>
+
+        <div class="row" id="add-station-row">
+          <div class="col-xs-12">
+            <p class="text-center" id="add-station"><span class="glyphicon glyphicon-plus"></span></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <button type="button" class="btn btn-primary btn-block">다음</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+    $("#add-station").click(function() {
+      var input = $(".station-input").filter(".0").clone();
+      var n = $(".station-input").length
+      input.removeClass("0").addClass(n.toString());
+      input.find("button").removeAttr("disabled");
+      input.find("input").val("");
+      input.insertBefore("#add-station-row");
+    })
+    $("div.form-station-input").on("click", ".station-input button",function(){
+      $(this).parents().filter(".station-input").remove();
+    });
+
+
+  </script>
+
+</body>
+
+</html>

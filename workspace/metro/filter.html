@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko-kr" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/master.css">
+  <title></title>
+</head>
+
+<body>
+  <div class="container main">
+    <div class="container head">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1 class="text-center">더치웨이</h1>
+        </div>
+      </div>
+    </div>
+    <div class="container form-filter-input">
+      <form class="" action="index.html" method="post">
+        <div class="row">
+          <div class="col-xs-12">
+            <input type="range" class="form-control-range" id="filter-max">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <input type="range" class="form-control-range" id="filter-sub">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <input type="range" class="form-control-range" id="filter-trans">
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+    $("#filter-max").attr("max",150).attr("min",0).attr("step",10);
+    $("#filter-sub").attr("max",5).attr("min",0);
+    $("#filter-trans").attr("max",5).attr("min",0);
+  </script>
+
+</body>
+
+</html>
