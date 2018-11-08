@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=0">
   <link rel="stylesheet" href="./css/bootstrap.min.css">
   <link rel="stylesheet" href="./css/master.css">
   <title></title>
@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="container form-station-input">
-      <form id="form-station" class="" action="index.html" method="post">
+      <form id="form-station" class="" action="filter.html" method="post">
         <!-- 입력 필드 1개 시작 -->
         <div class="row station-input 0">
           <div class="col-xs-12">
@@ -44,13 +44,13 @@
         </div>
 
         <div class="row" id="add-station-row">
-          <div class="col-xs-12">
+          <div class="col-xs-2 col-xs-offset-5">
             <p class="text-center" id="add-station"><span class="glyphicon glyphicon-plus"></span></p>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <button type="button" class="btn btn-primary btn-block">다음</button>
+            <button type="submit" class="btn btn-primary btn-block">다음</button>
           </div>
         </div>
       </form>
@@ -69,11 +69,14 @@
       input.removeClass("0").addClass(n.toString());
       input.find("button").removeAttr("disabled");
       input.find("input").val("");
-      input.insertBefore("#add-station-row");
-    })
-    $("div.form-station-input").on("click", ".station-input button",function(){
-      $(this).parents().filter(".station-input").remove();
+      input.css("display","none");
+      input.insertBefore("#add-station-row")
+      input.show("fast");
     });
+    $("div.form-station-input").on("click", ".station-input button",function(){
+      $(this).parents().filter(".station-input").hide("fast",function(){
+        $(this).remove();
+    })});
 
 
   </script>
