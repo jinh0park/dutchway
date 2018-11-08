@@ -8,8 +8,6 @@ div.form-station-input {
   height: 80%;
 }
 div .form-station-input .row{
-  margin-bottom: 20px;
-}
-div .filter-input{
-  margin-bottom: 50px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
