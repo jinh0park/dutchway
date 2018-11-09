@@ -2,58 +2,71 @@ from django.shortcuts import render, reverse
 from django.views.generic import ListView
 from .models import *
 import numpy as np
+from metro.settings import BASE_DIR
 import os, json
-from metro.settings import ASSET_DIR
 from django.http import Http404, JsonResponse, HttpResponseBadRequest
+from django.views.decorators.http import require_http_methods
 
 def index(request):
     context = {}
-    return render(request, reverse('seoul:index'),context)
+    return render(request, 'seoul/index.html',context)
 
+@require_http_methods(["POST"])
+def filter(request):
+    station = []
+    station_nm = []
+    for item in request.POST.dict().items():
+        try:
+            if item[0].split("-")[0] == 'station':
+                s = Station.objects.get(station_nm=item[1])
+                station.append(s.fr_code)
+                station_nm.append(item[1])
+        except:
+            pass
+    print(station)
+    station_text = ""
+    station_nm_text = ""
+    for s,nm in zip(station,station_nm):
+        station_text+=s+','
+        station_nm_text+=nm+' '
 
-def line_list(request):
+    station_text = station_text[:-1]
+    print(station_text)
     context = {
-        'lines': Station.STATION_NUM_CHOICES
+        'station':station_text,
+        'station_nm': station_nm_text
     }
-    return render(request, 'seoul/lines.html',context)
+    return render(request, 'seoul/filter.html',context)
 
 
-def station_list(request, line_num):
-    s = Station.objects.filter(line_num=line_num)
-    context = {
-        'stations': s
-    }
-    return render(request, 'seoul/stations.html',context)
-
-
-class StationView:
-    def get(self, request, station_nm):
-        s = Station.objects.filter(station_nm=station_nm)
-
-
-
+@require_http_methods(["POST"])
 def pathfinder(request):
-    if request.method != 'GET':
-        return Http404()
     try:
-        s = request.GET.get('station').split(',')
+        p = request.POST
+
+        s = p.get('station').split(',')
         if len(s) <=1:
             raise Exception
-        avg_f = int(request.GET.get("avg")) if request.GET.get("avg") else 1000
-        max_f = int(request.GET.get("max")) if request.GET.get("max") else 1000
-        transfer_f = int(request.GET.get("trans")) if request.GET.get("trans") else 1000
-        sub_f = int(request.GET.get("sub")) if request.GET.get("sub") else 1000
-        order = int(request.GET.get("order")) if request.GET.get("order") else 'max'
+        avg_f = int(p.get("avg")) if p.get("avg") else 1000
+        max_f = int(p.get("max")) if p.get("max") else 1000
+        transfer_f = int(p.get("trans")) if p.get("trans") else 1000
+        sub_f = int(p.get("sub")) if p.get("sub") else 1000
+        order = int(p.get("order")) if p.get("order") else 'max'
         ret = func(stations_fr_code = s, avg_f=avg_f, max_f=max_f, transfer_f=transfer_f, sub_f=sub_f, order=order)
-        if request.GET.get("count"):
-            cnt = int(request.GET.get("count"))
-            ret = ret[:cnt]
+
+        cnt = 10
+        if p.get("count"):
+            cnt = min(int(p.get("count")),10) # 최대 10개
+
+        ret = ret[:cnt]
+
         response = {
             "status": 200,
             "content" : ret
         }
         return JsonResponse(response)
-    except:
+    except Exception as e:
+        print(e)
         return HttpResponseBadRequest()
 
 
@@ -62,7 +75,7 @@ def pathfinder(request):
 
 
 def func(stations_fr_code, avg_f=1000, max_f=1000, transfer_f=1000, sub_f=1000, order='max'):
-    file = os.path.join(ASSET_DIR, 'shortest_path.npy')
+    file = os.path.join(BASE_DIR,'seoul','asset', 'shortest_path.npy')
     path = np.load(file)
     indices = [Station.objects.get(fr_code=fr_code).index for fr_code in stations_fr_code]
     N = path.shape[0]

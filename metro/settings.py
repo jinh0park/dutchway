@@ -24,9 +24,9 @@ ASSET_DIR = os.path.join(BASE_DIR, 'assets')
 SECRET_KEY = 'm9k)4l#q31c+6jj9xg+1na3wh(vagr+w(ncza^j$s&lpe&3%*9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1','.ngrok.io']
 
 
 # Application definition
@@ -121,5 +121,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
 
 AUTH_USER_MODEL = 'auth.User'

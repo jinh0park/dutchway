@@ -1,0 +1,13 @@
+div.main{
+  height: 100vh;
+}
+div.head {
+  height: 20%;
+}
+div.form-station-input {
+  height: 80%;
+}
+div .form-station-input .row{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

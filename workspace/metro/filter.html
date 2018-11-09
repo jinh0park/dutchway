@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko-kr" dir="ltr">
 
@@ -21,18 +22,74 @@
     <div class="container form-filter-input">
       <form class="" action="index.html" method="post">
         <div class="row">
-          <div class="col-xs-12">
-            <input type="range" class="form-control-range" id="filter-max">
+          <div class="col-xs-6">
+            <p class="text-left">최대 시간</p>
+          </div>
+          <div class="col-xs-6">
+            <p class="text-right" id="filter-max-value">1시간</p>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <input type="range" class="form-control-range" id="filter-sub">
+            <div class="input-group filter-input">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">-</button>
+              </span>
+              <input type="text" class="form-control" placeholder="지하철 역 입력">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">-</button>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-6">
+            <p class="text-left">최대 시간 차이</p>
+          </div>
+          <div class="col-xs-6">
+            <p class="text-right" id="filter-sub-value">10분</p>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <input type="range" class="form-control-range" id="filter-trans">
+            <div class="input-group filter-input">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" disabled="disabled">-</button>
+              </span>
+              <input type="text" class="form-control" placeholder="지하철 역 입력">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" disabled="disabled">-</button>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-6">
+            <p class="text-left">최대 환승 횟수</p>
+          </div>
+          <div class="col-xs-6">
+            <p class="text-right" id="filter-trans-value">3회</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="input-group filter-input">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" disabled="disabled">-</button>
+              </span>
+              <input type="text" class="form-control" placeholder="지하철 역 입력">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" disabled="disabled">-</button>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <button type="submit" class="btn btn-primary btn-block">Dutch Way!</button>
           </div>
         </div>
       </form>
@@ -46,9 +103,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script type="text/javascript">
-    $("#filter-max").attr("max",150).attr("min",0).attr("step",10);
-    $("#filter-sub").attr("max",5).attr("min",0);
-    $("#filter-trans").attr("max",5).attr("min",0);
+    $("#filter-max").attr("max", 150).attr("min", 0).attr("step", 10);
+    $("#filter-sub").attr("max", 5).attr("min", 0);
+    $("#filter-trans").attr("max", 5).attr("min", 0);
   </script>
 
 </body>
