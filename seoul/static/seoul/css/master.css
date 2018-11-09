@@ -2,15 +2,18 @@ div.main{
   height: 100vh;
 }
 div.head {
-  height: 20%;
+  height: 10%;
 }
-div.form-station-input {
-  height: 80%;
+div.wrapper{
+  margin-bottom: 30px;
 }
-div.form-station-input .row{
-  margin-top: 10px;
-  margin-bottom: 10px;
+div.row.station-input {
+  margin-bottom: 15px;
 }
+
 div.wrapper input {
   text-align: center;
+}
+
+div#stations_nm {
 }

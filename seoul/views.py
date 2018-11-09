@@ -1,5 +1,4 @@
 from django.shortcuts import render, reverse
-from django.views.generic import ListView
 from .models import *
 import numpy as np
 from metro.settings import BASE_DIR
@@ -24,6 +23,7 @@ def filter(request):
                 station_nm.append(item[1])
         except:
             pass
+
     print(station)
     station_text = ""
     station_nm_text = ""
@@ -44,6 +44,7 @@ def filter(request):
 def pathfinder(request):
     try:
         p = request.POST
+        print(p.dict())
 
         s = p.get('station').split(',')
         if len(s) <=1:
@@ -52,14 +53,14 @@ def pathfinder(request):
         max_f = int(p.get("max")) if p.get("max") else 1000
         transfer_f = int(p.get("trans")) if p.get("trans") else 1000
         sub_f = int(p.get("sub")) if p.get("sub") else 1000
-        order = int(p.get("order")) if p.get("order") else 'max'
+        order = p.get("order") if p.get("order") else 'tag_count'
         ret = func(stations_fr_code = s, avg_f=avg_f, max_f=max_f, transfer_f=transfer_f, sub_f=sub_f, order=order)
 
-        cnt = 10
+        cnt = 50
         if p.get("count"):
             cnt = min(int(p.get("count")),10) # 최대 10개
 
-        #ret = ret[:cnt]
+        ret = ret[:cnt]
 
         response = {
             "status": 200,
@@ -117,12 +118,14 @@ def func(stations_fr_code, avg_f=1000, max_f=1000, transfer_f=1000, sub_f=1000, 
                 'avg': int(avg_arr[i]),
                 'max': int(max_arr[i]),
                 'trans_max': int(transfer_arr[i]),
-                'sub_max': int(sub_arr[i])
+                'sub_max': int(sub_arr[i]),
+                'tag_count': dest.tag_count
             }
             ret.append(tmp)
 
-    rett = sorted(ret, key=lambda x: x[order])
-    rett.reverse()
+    rett = sorted(ret, key=lambda x: float(x[order]))
+    if order == 'tag_count':
+        rett.reverse()
     return rett
 
 

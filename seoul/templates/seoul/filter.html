@@ -23,10 +23,12 @@
 
     <div class="container form-filter-input">
       <div class="row">
-      <div class="col-xs-12">
-        <h4 class="text-center"><b>{{ station_nm }}</b></h4>
+        <div class="col-xs-12" id="stations_nm">
+          <h4 class="text-center"><b>{{ station_nm }}</b></h4>
+        </div>
       </div>
-    </div>
+
+
       <form class="" action="index.html" method="post">
 
         <div class="wrapper max">
@@ -41,7 +43,7 @@
                 <span class="input-group-btn">
                   <button class="btn btn-default down" type="button">-</button>
                 </span>
-                <input type="number" class="form-control" value="60">
+                <input type="number" id="max-value" class="form-control" value="60">
                 <span class="input-group-btn">
                   <button class="btn btn-default up" type="button">+</button>
                 </span>
@@ -63,7 +65,7 @@
                 <span class="input-group-btn">
                   <button class="btn btn-default down" type="button">-</button>
                 </span>
-                <input type="number" class="form-control" value="10">
+                <input type="number" id="sub-value" class="form-control" value="10">
                 <span class="input-group-btn">
                   <button class="btn btn-default up" type="button">+</button>
                 </span>
@@ -84,7 +86,7 @@
               <span class="input-group-btn">
                 <button class="btn btn-default down" type="button">-</button>
               </span>
-              <input type="number" class="form-control" value="2">
+              <input type="number" id="trans-value" class="form-control" value="2">
               <span class="input-group-btn">
                 <button class="btn btn-default up" type="button">+</button>
               </span>
@@ -93,22 +95,43 @@
         </div>
         </div>
 
-
+        <div class="wrapper order">
+          <div class="row">
+            <div class="col-xs-6">
+              정렬
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                <div class="btn-group .active" role="group">
+                  <button type="button" class="btn btn-default" f="tag_count">인기 순</button>
+                </div>
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-default" f="max">최대 시간</button>
+                </div>
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-default" f="sub_max">시간 차이</button>
+                </div>
+              </div>
+            </div>
+            <input type="hidden" id="order-value" class="form-control" name="order" value="tag_count">
+          </div>
+        </div>
       </form>
-    </div>
+
+
 
     <div class="container result">
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>호선</th><th>역 명</th><th>최대 소요 시간</th>
+            <th>#</th><th>호선</th><th>역 명</th><th>최대 소요 시간</th>
           </tr>
         </thead>
         <tbody>
-
         </tbody>
       </table>
-
     </div>
 
   </div>
@@ -126,7 +149,7 @@
     $("#filter-sub").attr("max", 5).attr("min", 0);
     $("#filter-trans").attr("max", 5).attr("min", 0);
 
-    $("div.wrapper button").click(function () {
+    $("div.wrapper .filter-input button").click(function () {
       var p = $(this).closest('div.wrapper');
       var f = p.attr("class").split(" ")[1];
       var step = 0;
@@ -143,6 +166,21 @@
       postData();
 
     });
+    
+    $("div.wrapper.order button").click(function () {
+
+      $("div.wrapper.order button").removeClass("active");
+
+      if($(this).hasClass("active")){
+        $(this).removeClass("active");
+      } else {
+        $(this).addClass("active");
+        $("#order-value").attr("value",$(this).attr("f"));
+      }
+      postData();
+
+
+    });
 
     function postData() {
       $.ajax({
@@ -152,22 +190,27 @@
         data:{
           csrfmiddlewaretoken: "{{ csrf_token }}",
           station: "{{ station }}",
-          max: $('div.wrapper.max').find("input").val(),
-          sub: $('div.wrapper.sub').find("input").val(),
-          trans: $('div.wrapper.trans').find("input").val()
+          max: $('#max-value').val(),
+          sub: $('#sub-value').val(),
+          trans: $('#trans-value').val(),
+          order: $('#order-value').val()
         },
         success: function (data) {
           console.log(data);
-          $("div.result").html(resultConvert(data.content));
+          $("div.result tbody").replaceWith(resultConvert(data.content));
         }
       });
     }
     
     function resultConvert(arr) {
       var ret = document.createElement("tbody");
-      function func_tr(data) {
+      function func_tr(num, data) {
         var tr = document.createElement("tr");
         var items = [data.dest.line_num, data.dest.station_nm, data.max];
+
+        var num_td = document.createElement("td");
+        num_td.innerText = num;
+        tr.appendChild(num_td);
         for(var i in items){
           var td = document.createElement("td");
           td.innerText = items[i];
@@ -175,9 +218,8 @@
         }
         return tr
       }
-      var tbody = $("tbody");
       for(var i in arr){
-        $(tbody).append(func_tr(arr[i]));
+        $(ret).append(func_tr(parseInt(i)+1, arr[i]));
       }
       console.log(ret);
       return ret;
