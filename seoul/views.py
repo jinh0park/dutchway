@@ -18,7 +18,7 @@ def filter(request):
     for item in request.POST.dict().items():
         try:
             if item[0].split("-")[0] == 'station':
-                s = Station.objects.get(station_nm=item[1])
+                s = Station.objects.filter(station_nm=item[1])[0]
                 station.append(s.fr_code)
                 station_nm.append(item[1])
         except:
@@ -58,7 +58,7 @@ def pathfinder(request):
         if p.get("count"):
             cnt = min(int(p.get("count")),10) # 최대 10개
 
-        ret = ret[:cnt]
+        #ret = ret[:cnt]
 
         response = {
             "status": 200,
@@ -74,7 +74,7 @@ def pathfinder(request):
 
 
 
-def func(stations_fr_code, avg_f=1000, max_f=1000, transfer_f=1000, sub_f=1000, order='max'):
+def func(stations_fr_code, avg_f=1000, max_f=1000, transfer_f=1000, sub_f=1000, order='tag_count'):
     file = os.path.join(BASE_DIR,'seoul','asset', 'shortest_path.npy')
     path = np.load(file)
     indices = [Station.objects.get(fr_code=fr_code).index for fr_code in stations_fr_code]
@@ -107,6 +107,7 @@ def func(stations_fr_code, avg_f=1000, max_f=1000, transfer_f=1000, sub_f=1000, 
                 'line_num':dest.line_num,
                 'fr_code':dest.fr_code,
                 'naver_cd':dest.naver_cd,
+                'tag_count':dest.tag_count
             }
             tmp = {
                 'dest': dest_,
@@ -120,6 +121,7 @@ def func(stations_fr_code, avg_f=1000, max_f=1000, transfer_f=1000, sub_f=1000, 
             ret.append(tmp)
 
     rett = sorted(ret, key=lambda x: x[order])
+    rett.reverse()
     return rett
 
 

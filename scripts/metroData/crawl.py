@@ -1,8 +1,9 @@
 from selenium import webdriver
 from metro.settings import BASE_DIR
-import os, time
+import os, time, json
 from urllib.parse import urlparse,parse_qs
 from . import db as metroDB
+import requests
 
 def driver_on():
     options = webdriver.ChromeOptions()
@@ -73,3 +74,24 @@ def get_path_time_adjacent_station(line_num):
 
     driver.quit()
 
+
+def instagram_tag_count_update():
+    cnt = 0
+    for station in metroDB.Station.objects.all():
+        if station.tag_count != 0:
+            continue
+        try:
+            url = 'https://www.instagram.com/explore/tags/{}역/?__a=1'.format(station.station_nm)
+            time.sleep(0.5)
+            r = requests.get(url)
+            r = json.loads(r.text)
+            count = r['graphql']['hashtag']['edge_hashtag_to_media']["count"]
+            station.tag_count = count
+            station.save()
+            cnt+=1
+            print(station.station_nm, station.tag_count)
+        except Exception as e:
+            print(e)
+            time.sleep(5)
+            pass
+    print(cnt)
