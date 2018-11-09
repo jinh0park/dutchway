@@ -45,6 +45,7 @@ class Station(models.Model):
     tail_station = models.ForeignKey('self', on_delete=models.CASCADE, default='', related_name= 'tail_station_set')
     head_time = models.FloatField(null=True)
     tail_time = models.FloatField(null=True)
+    tag_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.station_nm + '({})'.format(self.line_num)

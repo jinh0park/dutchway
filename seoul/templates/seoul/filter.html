@@ -98,6 +98,16 @@
     </div>
 
     <div class="container result">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>호선</th><th>역 명</th><th>최대 소요 시간</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
 
     </div>
 
@@ -154,9 +164,7 @@
     }
     
     function resultConvert(arr) {
-      var ret = document.createElement("table");
-      ret.appendChild(document.createElement("tbody"));
-      $(ret).addClass("table").addClass("table-striped");
+      var ret = document.createElement("tbody");
       function func_tr(data) {
         var tr = document.createElement("tr");
         var items = [data.dest.line_num, data.dest.station_nm, data.max];
@@ -167,7 +175,7 @@
         }
         return tr
       }
-      var tbody = $(ret).find("tbody");
+      var tbody = $("tbody");
       for(var i in arr){
         $(tbody).append(func_tr(arr[i]));
       }
