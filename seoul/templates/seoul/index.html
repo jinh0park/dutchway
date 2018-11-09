@@ -70,6 +70,7 @@
       i = $(".station-input");
       var input = i.filter(".0").clone();
       var n = i.length;
+      input.attr("name","station-"+n);
       input.find("input").attr("name","station-"+n);
       input.removeClass("0").addClass(n.toString());
       input.find("button").removeAttr("disabled");

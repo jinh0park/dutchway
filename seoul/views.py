@@ -15,10 +15,11 @@ def index(request):
 def filter(request):
     station = []
     station_nm = []
+    print(request.POST.dict())
     for item in request.POST.dict().items():
         try:
             if item[0].split("-")[0] == 'station':
-                s = Station.objects.get(station_nm=item[1])
+                s = Station.objects.filter(station_nm=item[1])[0]
                 station.append(s.fr_code)
                 station_nm.append(item[1])
         except:
@@ -58,7 +59,7 @@ def pathfinder(request):
         if p.get("count"):
             cnt = min(int(p.get("count")),10) # 최대 10개
 
-        ret = ret[:cnt]
+        #ret = ret[:cnt]
 
         response = {
             "status": 200,
