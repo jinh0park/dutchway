@@ -1,81 +1,61 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ko-kr" dir="ltr">
+{% extends 'seoul/base.html' %}
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=0">
-  <link rel="stylesheet" href="{% static 'seoul/css/bootstrap.min.css' %}">
-  <link rel="stylesheet" href="{% static 'seoul/css/master.css' %}">
-  <title></title>
-</head>
-
-<body>
-  <div class="container main">
-    <div class="container head">
-      <div class="row">
-        <div class="col-xs-12">
-          <h1 class="text-center">더치웨이</h1>
-        </div>
+{% block content %}
+  <div class="container form-filter-input">
+    <div class="row">
+      <div class="col-xs-12" id="stations_nm">
+        <h4 class="text-center"><b>{{ station_nm }}</b></h4>
       </div>
     </div>
 
 
-    <div class="container form-filter-input">
-      <div class="row">
-        <div class="col-xs-12" id="stations_nm">
-          <h4 class="text-center"><b>{{ station_nm }}</b></h4>
+    <form class="" action="index.html" method="post">
+
+      <div class="wrapper max">
+        <div class="row">
+          <div class="col-xs-6">
+            <p class="text-left">최대 시간</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="input-group filter-input">
+                <span class="input-group-btn">
+                  <button class="btn btn-default down" type="button">-</button>
+                </span>
+              <input type="number" id="max-value" class="form-control" value="60">
+              <span class="input-group-btn">
+                  <button class="btn btn-default up" type="button">+</button>
+                </span>
+            </div>
+          </div>
         </div>
       </div>
 
 
-      <form class="" action="index.html" method="post">
-
-        <div class="wrapper max">
-          <div class="row">
-            <div class="col-xs-6">
-              <p class="text-left">최대 시간</p>
-            </div>
+      <div class="wrapper sub">
+        <div class="row">
+          <div class="col-xs-6">
+            <p class="text-left">최대 시간 차이</p>
           </div>
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="input-group filter-input">
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="input-group filter-input">
                 <span class="input-group-btn">
                   <button class="btn btn-default down" type="button">-</button>
                 </span>
-                <input type="number" id="max-value" class="form-control" value="60">
-                <span class="input-group-btn">
+              <input type="number" id="sub-value" class="form-control" value="10">
+              <span class="input-group-btn">
                   <button class="btn btn-default up" type="button">+</button>
                 </span>
-              </div>
             </div>
           </div>
         </div>
+      </div>
 
-
-        <div class="wrapper sub">
-          <div class="row">
-            <div class="col-xs-6">
-              <p class="text-left">최대 시간 차이</p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="input-group filter-input">
-                <span class="input-group-btn">
-                  <button class="btn btn-default down" type="button">-</button>
-                </span>
-                <input type="number" id="sub-value" class="form-control" value="10">
-                <span class="input-group-btn">
-                  <button class="btn btn-default up" type="button">+</button>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="wrapper trans">
-          <div class="row">
+      <div class="wrapper trans">
+        <div class="row">
           <div class="col-xs-6">
             <p class="text-left">최대 환승 횟수</p>
           </div>
@@ -93,41 +73,43 @@
             </div>
           </div>
         </div>
-        </div>
+      </div>
 
-        <div class="wrapper order">
-          <div class="row">
-            <div class="col-xs-6">
-              정렬
-            </div>
+      <div class="wrapper order">
+        <div class="row">
+          <div class="col-xs-6">
+            정렬
           </div>
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                <div class="btn-group .active" role="group">
-                  <button type="button" class="btn btn-default" f="tag_count">인기 순</button>
-                </div>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default" f="max">최대 시간</button>
-                </div>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default" f="sub_max">시간 차이</button>
-                </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+              <div class="btn-group .active" role="group">
+                <button type="button" class="btn btn-default" f="tag_count">인기 순</button>
+              </div>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default" f="max">최대 시간</button>
+              </div>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default" f="sub_max">시간 차이</button>
               </div>
             </div>
-            <input type="hidden" id="order-value" class="form-control" name="order" value="tag_count">
           </div>
+          <input type="hidden" id="order-value" class="form-control" name="order" value="tag_count">
         </div>
-      </form>
-
+      </div>
+    </form>
 
 
     <div class="container result">
       <table class="table table-striped">
         <thead>
-          <tr>
-            <th>#</th><th>호선</th><th>역 명</th><th>최대 소요 시간</th>
-          </tr>
+        <tr>
+          <th>#</th>
+          <th>호선</th>
+          <th>역 명</th>
+          <th>최대 소요 시간</th>
+        </tr>
         </thead>
         <tbody>
         </tbody>
@@ -135,12 +117,9 @@
     </div>
 
   </div>
+{% endblock %}
 
-
-
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script src="{% static 'seoul/js/bootstrap.min.js' %}"></script>
+{% block script %}
   <script type="text/javascript">
     $(function () {
       postData();
@@ -153,41 +132,46 @@
       var p = $(this).closest('div.wrapper');
       var f = p.attr("class").split(" ")[1];
       var step = 0;
-      if(f==="max" || f==="sub"){
+      if (f === "max" || f === "sub") {
         step = 5;
-      } else if(f==="trans") {
+      } else if (f === "trans") {
         step = 1;
       }
-      if($(this).hasClass('down')) step=step*(-1);
+      if ($(this).hasClass('down')) step = step * (-1);
       var i = p.find('input');
       var v = parseInt(i.val());
-      v = v+step>=0?v+step:0;
-      p.find("input").attr("value",v);
+      v = v + step >= 0 ? v + step : 0;
+      p.find("input").attr("value", v);
       postData();
 
     });
-    
+
     $("div.wrapper.order button").click(function () {
 
       $("div.wrapper.order button").removeClass("active");
 
-      if($(this).hasClass("active")){
+      if ($(this).hasClass("active")) {
         $(this).removeClass("active");
       } else {
         $(this).addClass("active");
-        $("#order-value").attr("value",$(this).attr("f"));
+        $("#order-value").attr("value", $(this).attr("f"));
       }
       postData();
 
 
+    });
+
+    $("tr.result-row").click(function () {
+      console.log("dd");
+      $(this).next().show("slow");
     });
 
     function postData() {
       $.ajax({
         url: "{% url 'seoul:api_path' %}",
-        type:'POST',
-        dataType:'json',
-        data:{
+        type: 'POST',
+        dataType: 'json',
+        data: {
           csrfmiddlewaretoken: "{{ csrf_token }}",
           station: "{{ station }}",
           max: $('#max-value').val(),
@@ -201,9 +185,10 @@
         }
       });
     }
-    
+
     function resultConvert(arr) {
       var ret = document.createElement("tbody");
+
       function func_tr(num, data) {
         var tr = document.createElement("tr");
         var items = [data.dest.line_num, data.dest.station_nm, data.max];
@@ -211,15 +196,29 @@
         var num_td = document.createElement("td");
         num_td.innerText = num;
         tr.appendChild(num_td);
-        for(var i in items){
+        for (var i in items) {
           var td = document.createElement("td");
           td.innerText = items[i];
           tr.appendChild(td);
         }
+        $(tr).attr("onclick","javacript");
         return tr
       }
-      for(var i in arr){
-        $(ret).append(func_tr(parseInt(i)+1, arr[i]));
+
+      function func_tr_2(num, data) {
+        var tr = document.createElement("tr");
+        var td = document.createElement("td");
+        $(td).attr('colspan',4);
+        td.innerText = "아아아아아아아아아아아아아아아아아";
+        tr.appendChild(td);
+        $(tr).css("display","none");
+        return tr
+      }
+
+
+      for (var i in arr) {
+        $(ret).append(func_tr(parseInt(i) + 1, arr[i]));
+        $(ret).append(func_tr_2(parseInt(i) + 1, arr[i]));
       }
       console.log(ret);
       return ret;
@@ -229,7 +228,5 @@
 
 
   </script>
+{% endblock %}
 
-</body>
-
-</html>

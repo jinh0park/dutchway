@@ -1,25 +1,7 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ko-kr" dir="ltr">
+{% extends 'seoul/base.html' %}
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=0">
-  <link rel="stylesheet" href="{% static 'seoul/css/bootstrap.min.css' %}">
-  <link rel="stylesheet" href="{% static 'seoul/css/master.css' %}">
-  <title></title>
-</head>
-
-<body>
-  <div class="container main">
-    <div class="container head">
-      <div class="row">
-        <div class="col-xs-12">
-          <h1 class="text-center">더치웨이</h1>
-        </div>
-      </div>
-    </div>
-    <div class="container form-station-input">
+{% block content %}
+  <div class="container form-station-input">
       <form id="form-station" class="" action="{% url 'seoul:filter' %}" method="post">
         {% csrf_token %}
         <!-- 입력 필드 1개 시작 -->
@@ -57,7 +39,7 @@
         </div>
       </form>
     </div>
-    <div class="container">
+  <div class="container">
       <div class="row">
         <div class="col-xs-12">
           <hr>
@@ -75,15 +57,10 @@
         </div>
       </div>
     </div>
-
-  </div>
-
+{% endblock %}
 
 
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script src="{% static 'seoul/js/bootstrap.min.js' %}"></script>
-
+{% block script %}
   <script type="text/javascript">
     $("#add-station").click(function() {
       i = $(".station-input");
@@ -103,7 +80,4 @@
         $(this).remove();
     })});
   </script>
-
-</body>
-
-</html>
+{% endblock %}
